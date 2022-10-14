@@ -1,11 +1,10 @@
 import * as alt from 'alt-server';
-import { Athena } from '../../../../server/api/athena';
-import { VehicleEvents } from '../../../../server/events/vehicleEvents';
-import { ATHENA_EVENTS_VEHICLE } from '../../../../shared/enums/athenaEvents';
+import { Athena } from '@AthenaServer/api/athena';
+import { ATHENA_EVENTS_VEHICLE } from '@AthenaShared/enums/athenaEvents';
 
 export class GarageSystem {
     static init() {
-        VehicleEvents.on(ATHENA_EVENTS_VEHICLE.DESTROYED, GarageSystem.handleDestroy);
+        Athena.events.vehicle.on(ATHENA_EVENTS_VEHICLE.DESTROYED, GarageSystem.handleDestroy);
     }
 
     static handleDestroy(vehicle: alt.Vehicle) {

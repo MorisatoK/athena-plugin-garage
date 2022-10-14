@@ -1,18 +1,15 @@
 import * as alt from 'alt-server';
 
-import { GarageSpaceShape } from '../../../../server/extensions/extColshape';
-import { sha256 } from '../../../../server/utility/encryption';
 import { GARAGE_INTERACTIONS } from '../../shared/events';
 import { LOCALE_GARAGE_FUNCS } from '../../shared/locales';
-import { isVehicleType } from '../../../../shared/enums/vehicleTypeFlags';
-import { VehicleData } from '../../../../shared/information/vehicles';
-import IGarage from '../../../../shared/interfaces/iGarage';
-import { IVehicle } from '../../../../shared/interfaces/iVehicle';
-import { Vector3 } from '../../../../shared/interfaces/vector';
-import { LOCALE_KEYS } from '../../../../shared/locale/languages/keys';
-import { LocaleController } from '../../../../shared/locale/locale';
-import { distance2d } from '../../../../shared/utility/vector';
-import { Athena } from '../../../../server/api/athena';
+import { isVehicleType } from '@AthenaShared/enums/vehicleTypeFlags';
+import { VehicleData } from '@AthenaShared/information/vehicles';
+import IGarage from '@AthenaShared/interfaces/iGarage';
+import { IVehicle } from '@AthenaShared/interfaces/iVehicle';
+import { LOCALE_KEYS } from '@AthenaShared/locale/languages/keys';
+import { LocaleController } from '@AthenaShared/locale/locale';
+import { Athena } from '@AthenaServer/api/athena';
+import { GarageSpaceShape } from '@AthenaServer/extensions/extColshape';
 
 const PARKING_SPACE_DIST_LIMIT = 5;
 const GarageUsers = {};
@@ -23,8 +20,8 @@ let activeGarages: Array<IGarage> = [];
 let parkingSpots: { [key: string]: Array<GarageSpaceShape> } = {};
 
 interface PositionAndRotation {
-    position: Vector3;
-    rotation: Vector3;
+    position: alt.IVector3;
+    rotation: alt.IVector3;
 }
 
 export class GarageFunctions {
@@ -160,7 +157,7 @@ export class GarageFunctions {
                 // The vehicle exists and may or may not be in a parking space
                 // Need to check if the vehicle is close enough to a parking space.
                 for (let i = 0; i < garage.parking.length; i++) {
-                    const dist = distance2d(existingVehicle.pos, garage.parking[i].position);
+                    const dist = Athena.utility.vector.distance2d(existingVehicle.pos, garage.parking[i].position);
                     if (dist > PARKING_SPACE_DIST_LIMIT) {
                         continue;
                     }
@@ -202,9 +199,9 @@ export class GarageFunctions {
      * @param {Array} parkingSpots - Array<PositionAndRotation>
      * @returns The distance between the player and the closest parking spot.
      */
-    static isCloseToSpot(position: Vector3, parkingSpots: Array<PositionAndRotation>): boolean {
+    static isCloseToSpot(position: alt.IVector3, parkingSpots: Array<PositionAndRotation>): boolean {
         for (let i = 0; i < parkingSpots.length; i++) {
-            const dist = distance2d(position, parkingSpots[i].position);
+            const dist = Athena.utility.vector.distance2d(position, parkingSpots[i].position);
             if (dist >= 5) {
                 continue;
             }
@@ -274,7 +271,7 @@ export class GarageFunctions {
         }
 
         // Create and store the vehicle on the hashed vehicle parking spot.
-        const hash = sha256(JSON.stringify(openSpot));
+        const hash = Athena.utility.hash.sha256(JSON.stringify(openSpot));
         const newVehicle = Athena.vehicle.funcs.spawn(data, openSpot.position, openSpot.rotation);
 
         if (!newVehicle) {
@@ -318,7 +315,7 @@ export class GarageFunctions {
         }
 
         const garage = activeGarages[index];
-        const dist = distance2d(vehicle.pos, garage.position);
+        const dist = Athena.utility.vector.distance2d(vehicle.pos, garage.position);
 
         // Check if the vehicle is either close to a parking spot or the garage itself.
         if (dist >= 10 && !GarageFunctions.isCloseToSpot(vehicle.pos, garage.parking)) {

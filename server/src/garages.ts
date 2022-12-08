@@ -4,6 +4,7 @@ import '../garages/DowntownVinewoodLower';
 import '../garages/DowntownVinewoodUpper';
 import '../garages/GrandSenoraDesert';
 import '../garages/GrapeSeed';
+import '../garages/LaPuertaBeach';
 import '../garages/LaPuertaDocks';
 import '../garages/LaPuertaVehicle';
 import '../garages/LegionSquare';

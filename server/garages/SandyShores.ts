@@ -1,4 +1,4 @@
-import { VEHICLE_TYPE } from '../../../../shared/enums/vehicleTypeFlags';
+import { VEHICLE_TYPE } from '@AthenaShared/enums/vehicleTypeFlags';
 import { GarageFunctions } from '../src/view';
 
 const garage = {

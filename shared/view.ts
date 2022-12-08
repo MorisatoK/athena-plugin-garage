@@ -2,7 +2,7 @@ import * as alt from 'alt-client';
 import { WebViewController } from '@AthenaClient/extensions/view2';
 import ViewModel from '@AthenaClient/models/viewModel';
 import { isAnyMenuOpen } from '@AthenaClient/utility/menus';
-import { IVehicle } from '../../../shared/interfaces/iVehicle';
+import { IVehicle } from '@AthenaShared/interfaces/iVehicle';
 import { GARAGE_INTERACTIONS } from './events';
 import { LOCALE_GARAGE_VIEW } from './locales';
 
